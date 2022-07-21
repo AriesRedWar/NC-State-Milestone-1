@@ -1,1 +1,3 @@
-# NC-State-Milestone-1
+This is the start of it all!!!
+
+First commit
