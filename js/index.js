@@ -184,5 +184,4 @@ function keyDown(event) {
 //Event listeners
 document.body.addEventListener("keydown", keyDown);
 
-
 startGame();
