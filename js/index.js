@@ -1,76 +1,188 @@
 const canvas = document.getElementById("gameArea");
-const ctx = canvas.getContext("2d");
+const ctx = canvas.getContext("2d"); /*ctx = context */
 
-let speed = 7;
+class SnakeTail {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+  }
+}
 
-let tileCount = 40;
-let tileSize = canvas.width / tileCount -2;
+// game setup
+let speed = 8;
+let tileCount = 20;
+let tileSize = canvas.width / tileCount - 2;
+
+// Snake head starting position
 let headX = 10;
 let headY = 10;
 
-let xVelocity=0;
-let yVelocity=0;
+const snakeTail = [];
+let tailLength = 0;
+
+// Snake food Starting position
+let dotX = 5;
+let dotY = 5;
+
+// movement varilable
+let xVelocity = 0;
+let yVelocity = 0;
+
+let score = 0;
+
+const gulpSound = new Audio("/sprites/Gulp.mp3");
 
 //game loop
-function drawGame(){
-    clearScreen(); /*resets the screen*/
-    drawSnake();
-setTimeout(drawGame, 1000/ speed);    
+function startGame() {
+  changeSnakePosition(); /**/
+  let result = isGameOver();
+  {
+    if (result) {
+      return;
+    }
+  }
 
+  clearScreen(); /*resets the screen*/
+
+  checkDotCollision(); /*Snake Eats Dot*/
+  drawDot(); /*makes random dots on screen when one is Ate*/
+  drawSnake(); /*Snakes starting position*/
+
+  drawScore(); /*score text of how many dots have ben ate */
+  if (score > 2) {
+    speed = 11;
+  }
+  if (score > 5) {
+    speed = 15;
+  }
+
+  setTimeout(
+    startGame,
+    1000 / speed
+  ); /*refreshes the screen while the snake is moving*/
 }
 
-function clearScreen(){
-    ctx.fillStyle = 'Black'
-    ctx.fillRect(0,0,canvas.width,canvas.height);
+// game over settings and function
+function isGameOver() {
+  let gameOver = false;
+  // snake is not moving yet no game over
+  if (yVelocity === 0 && xVelocity === 0) {
+    return false;
+  }
+
+  //walls
+  if (headX < 0) {
+    gameOver = true;
+  } else if (headX == tileCount) {
+    gameOver = true;
+  } else if (headY < 0) {
+    gameOver = true;
+  } else if (headY == tileCount) {
+    gameOver = true;
+  }
+
+  //Snake body
+  for (let i = 0; i < snakeTail.length; i++) {
+    let part = snakeTail[i];
+    if (part.x === headX && part.y === headY) {
+      gameOver = true;
+      break;
+    }
+  }
+
+  // game over text
+  if (gameOver) {
+    ctx.fillStyle = "red";
+    ctx.font = "50px Arial";
+    ctx.fillText("Game Over!", canvas.width / 6.5, canvas.height / 2);
+  }
+
+  return gameOver;
 }
 
-function drawSnake(){
-    ctx.fillStyle = 'orange'
-    ctx.fillRect(headX * tileCount, headY* tileCount, tileSize, tileSize)
+// Score text on screen
+function drawScore() {
+  ctx.fillStyle = "green";
+  ctx.font = "15px Ariel";
+  ctx.fillText("Dots Eaten: " + score, canvas.width - 110, 380);
 }
 
-document.body.addEventListener('keydown', keyDown);
-document.body.addEventListener('keyup', keyUp);
-
-function keyDown(event){
-    //up key
-    if (event.keyCode == 38){
-        upPressed = true;
-    }
-    //down key
-    if (event.keyCode == 40){
-        downPressed = true;
-    }
-        //left key
-        if (event.keyCode == 37){
-            leftPressed = true;
-        }
-            //right key
-    if (event.keyCode == 39){
-        rightPressed = true;
-    }
+// sets the game square when the browser is refreshed or loaded
+function clearScreen() {
+  ctx.fillStyle = "Black";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
 }
-function keyUp(event){
-    //up key
-    if (event.keyCode == 38){
-        upPressed = false;
-    }
-    //down key
-    if (event.keyCode == 40){
-        downPressed = false;
-    }
-        //left key
-        if (event.keyCode == 37){
-            leftPressed = false;
-        }
-            //right key
-    if (event.keyCode == 39){
-        rightPressed = false;
-    }}
-    
-    document.body.addEventListener('keydown', keyDown);
-    document.body.addEventListener('keyup', keyUp);
 
-drawGame();
+// snake head and tail design
+function drawSnake() {
+  ctx.fillStyle = "green";
+  for (let i = 0; i < snakeTail.length; i++) {
+    let part = snakeTail[i];
+    ctx.fillRect(part.x * tileCount, part.y * tileCount, tileSize, tileSize);
+  }
 
-//ctx = context 
+  snakeTail.push(new SnakeTail(headX, headY)); //put an item at the end
+  while (snakeTail.length > tailLength) {
+    snakeTail.shift(); // removes the furthest item from the snake tail if its more then
+  }
+
+  ctx.fillStyle = "Orange";
+  ctx.fillRect(headX * tileCount, headY * tileCount, tileSize, tileSize);
+}
+
+// Snake Food
+function drawDot() {
+  ctx.fillStyle = "white";
+  ctx.fillRect(dotX * tileCount, dotY * tileCount, tileSize, tileSize);
+}
+
+// Snake eats Dot
+function checkDotCollision() {
+  if (dotX === headX && dotY == headY) {
+    dotX = Math.floor(Math.random() * tileCount);
+    dotY = Math.floor(Math.random() * tileCount);
+    tailLength++;
+    score++;
+    gulpSound.play();
+  }
+}
+
+// Snake
+function changeSnakePosition() {
+  headX = headX + xVelocity;
+  headY = headY + yVelocity;
+}
+
+// Snake movement Keys
+function keyDown(event) {
+  //up key movement
+  if (event.keyCode == 38){
+    if (yVelocity == 1) return;
+    yVelocity = -1;
+    xVelocity = 0;
+  }
+  //down key movement
+  if (event.keyCode == 40){
+    if (yVelocity == -1) return;
+    yVelocity = 1;
+    xVelocity = 0;
+  }
+  //left key movement
+  if (event.keyCode == 37){
+    if (xVelocity == 1) return;
+    yVelocity = 0;
+    xVelocity = -1;
+  }
+  //right key movement
+  if (event.keyCode == 39){
+    if (xVelocity == -1) return;
+    yVelocity = 0;
+    xVelocity = 1;
+  }
+}
+
+//Event listeners
+document.body.addEventListener("keydown", keyDown);
+
+
+startGame();
