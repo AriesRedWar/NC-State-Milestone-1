@@ -8,7 +8,7 @@ class SnakeTail {
   }
 }
 
-// game setup
+// game play variables
 let speed = 8;
 let tileCount = 20;
 let tileSize = canvas.width / tileCount - 2;
@@ -21,8 +21,8 @@ const snakeTail = [];
 let tailLength = 0;
 
 // Snake food Starting position
-let dotX = 5;
-let dotY = 5;
+let dotX = Math.floor(Math.random() * tileCount)
+let dotY = Math.floor(Math.random() * tileCount)
 
 // movement varilable
 let xVelocity = 0;
@@ -47,7 +47,6 @@ function startGame() {
   checkDotCollision(); /*Snake Eats Dot*/
   drawDot(); /*makes random dots on screen when one is Ate*/
   drawSnake(); /*Snakes starting position*/
-
   drawScore(); /*score text of how many dots have ben ate */
   if (score > 2) {
     speed = 11;
@@ -55,11 +54,15 @@ function startGame() {
   if (score > 5) {
     speed = 15;
   }
-
+  if (score > 30) {
+    speed = 20;
+  }
+/*refreshes the screen while the snake is moving*/
   setTimeout(
     startGame,
     1000 / speed
-  ); /*refreshes the screen while the snake is moving*/
+  ); 
+  resetGame();
 }
 
 // game over settings and function
@@ -105,6 +108,7 @@ function drawScore() {
   ctx.fillStyle = "green";
   ctx.font = "15px Ariel";
   ctx.fillText("Dots Eaten: " + score, canvas.width - 110, 380);
+  HighScores();
 }
 
 // sets the game square when the browser is refreshed or loaded
@@ -181,7 +185,14 @@ function keyDown(event) {
   }
 }
 
+function resetGame(e){
+    if (e.keycode == 13)
+    return;
+    startGame();
+}
+
 //Event listeners
 document.body.addEventListener("keydown", keyDown);
+document.body.addEventListener("resetGame", resetGame);
 
 startGame();

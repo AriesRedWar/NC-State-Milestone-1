@@ -5,7 +5,7 @@ body {
   height: 100vh;
   background: linear-gradient(0deg, red, blue, green);
   text-align: center;
-  overflow: hidden; /*Hide scrollbar*/
+  overflow: auto; /*Hide scrollbar*/
 }
 h1 {
   font-family: Comic sans MS;
@@ -15,3 +15,10 @@ audio {
     width: 400px;
   }
   
+  nav,
+.nav {
+    background: linear-gradient(aqua, black);
+    }
+#img {
+    size: 30px
+}
