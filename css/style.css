@@ -5,7 +5,7 @@ body {
   height: 100vh;
   background: linear-gradient(0deg, red, blue, green);
   text-align: center;
-  overflow: auto; /*Hide scrollbar*/
+  overflow: hidden; /*Hide scrollbar*/
 }
 h1 {
   font-family: Comic sans MS;
@@ -14,11 +14,64 @@ audio {
     height: 20px;
     width: 400px;
   }
-  
-  nav,
-.nav {
-    background: linear-gradient(aqua, black);
-    }
-#img {
-    size: 30px
+
+  nav ul,
+.nav ul {
+    margin: 0;
+    list-style-type: none;
 }
+
+nav li,
+.nav li {
+    display: inline;
+}
+
+nav a,
+.nav a {
+    color: white;
+    text-decoration: underline;
+    margin-right: 20px;
+}
+
+[class*="col-"]{
+    float: left;
+    padding: 15px;
+}
+ 
+.col-3{
+    width: 30%;
+}
+ 
+ /* Button */
+ .greenBut{
+    color: darkblue;
+    padding: 12px; /* Some padding */
+    background-color: rgb(67, 255, 20);
+    font-size: 24px;
+    border: 4px solid black; /* Gray border */
+    border-radius: 6px; /* Rounded borders */
+    margin: 10px;
+ }
+
+ .score{
+    color: darkblue;
+    padding: 12px; /* Some padding */
+    background-color: rgb(67, 255, 20);
+    font-size: 24px;
+    border: 4px solid black; /* Gray border */
+    border-radius: 6px; /* Rounded borders */
+    margin: 10px;
+ }
+
+form{
+    margin: 40px;
+    font-size: 24px;
+    color: rgb(255, 6, 6);
+ }
+
+ .highscore {
+    background-color: rgb(7, 182, 16);
+    width: 30%;
+    float: left;
+    padding: 15px;
+ }

@@ -1,5 +1,8 @@
 const canvas = document.getElementById("gameArea");
 const ctx = canvas.getContext("2d"); /*ctx = context */
+const highscore = document.getElementsByClassName("highscore")
+const snakeScore = document.getElementById("score")
+
 
 class SnakeTail {
   constructor(x, y) {
@@ -29,25 +32,23 @@ let xVelocity = 0;
 let yVelocity = 0;
 
 let score = 0;
-
 const gulpSound = new Audio("/sprites/Gulp.mp3");
 
 //game loop
 function startGame() {
   changeSnakePosition(); /**/
   let result = isGameOver();
-  {
+    {
     if (result) {
       return;
-    }
   }
 
-  clearScreen(); /*resets the screen*/
 
+  clearScreen(); /*resets the screen*/
   checkDotCollision(); /*Snake Eats Dot*/
   drawDot(); /*makes random dots on screen when one is Ate*/
   drawSnake(); /*Snakes starting position*/
-  drawScore(); /*score text of how many dots have ben ate */
+    drawScore(); /*score text of how many dots have ben ate */
   if (score > 2) {
     speed = 11;
   }
@@ -62,8 +63,7 @@ function startGame() {
     startGame,
     1000 / speed
   ); 
-  resetGame();
-}
+}}
 
 // game over settings and function
 function isGameOver() {
@@ -98,8 +98,7 @@ function isGameOver() {
     ctx.fillStyle = "red";
     ctx.font = "50px Arial";
     ctx.fillText("Game Over!", canvas.width / 6.5, canvas.height / 2);
-  }
-
+      }
   return gameOver;
 }
 
@@ -108,8 +107,18 @@ function drawScore() {
   ctx.fillStyle = "green";
   ctx.font = "15px Ariel";
   ctx.fillText("Dots Eaten: " + score, canvas.width - 110, 380);
-  HighScores();
-}
+  for (let i = 0; i < snakeScore.value; i++) {
+    let part = snakeScore[i];
+    if (part.x === headX && part.y === headY) {
+      gameOver = true;
+      break;
+          }
+  }
+  console.log(snakeScore)
+  console.log(score)
+ }
+
+
 
 // sets the game square when the browser is refreshed or loaded
 function clearScreen() {
@@ -185,14 +194,9 @@ function keyDown(event) {
   }
 }
 
-function resetGame(e){
-    if (e.keycode == 13)
-    return;
-    startGame();
-}
 
 //Event listeners
 document.body.addEventListener("keydown", keyDown);
-document.body.addEventListener("resetGame", resetGame);
+
 
 startGame();
