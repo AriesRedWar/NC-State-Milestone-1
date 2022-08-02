@@ -12,26 +12,36 @@
         <ul>
             <li>
                 <a href="index.html">Home Page</a>
-                <a href="highscore.html">HighScore Page</a>
             </li>
         </ul>
     </nav>
-    <div>
+    <div class="col-3">
+    <form id="myform">
+            <label>Your Name:</label>
+            <input type="text" name="snakeName" 
+            maxlength="20" class="greenBut"  id="snakeName" 
+            placeholder="Type Your Name" required>
+            <label>Dots Eaten:</label>
+            <input type="number" name="snakeScore" class="greenBut" value=0 id="snakeScore" readonly></input>
+            <button type="submit" class="greenBut" id="submit">Submit score</button>
+        </form>
+        <output id="output"></output>
+</div>
+    <div class="col-3">
         <h1>Snake (Eat More Dots)</h1>
         <canvas id="gameArea" width="400" height="400"> </canvas>
-
-    </div>
-    <div>
             <audio controls autoplay loop muted>
             <source src="/sprites/jungle.mp3" type="audio/mp3">
             Your browser doesn't support the audio file!
         </audio> 
     </div>
-    <div class="highScores">
-        <h2>High Scores</h2>
-        <ol id="highScores"></ol>
-        <input id="lowScore" type="hidden">
-    </div>
+    <div id="top10">
+        <h2>Top 10 Dot Eaters</h2>
+        <ol class="highscores">
+        </ol>
+        <p id="demo"></p>
+        <input id="lowscore" type="hidden">
+      </div>
     <script src="/js/index.js"></script>
     </body>
 </html>

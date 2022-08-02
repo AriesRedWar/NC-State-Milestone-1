@@ -1,7 +1,23 @@
 const canvas = document.getElementById("gameArea");
 const ctx = canvas.getContext("2d"); /*ctx = context */
-const highscore = document.getElementsByClassName("highscore")
-const snakeScore = document.getElementById("score")
+const snakeName = document.getElementById("snakeName")
+const snakeScore = document.getElementById("snakeScore")
+const submit = document.getElementById("submit")
+
+
+const highScores = JSON.parse(localStorage.getItem("highScores")) || [];
+
+const MAX_HIGH_SCORE = 10;
+console.log(highScores)
+
+snakeName.addEventListener('keyup', () => {
+    submit.disabled = !snakeName.value;
+})
+
+
+
+
+
 
 
 class SnakeTail {
@@ -42,8 +58,24 @@ function startGame() {
     if (result) {
       return;
   }
+  saveHighScore = (e) => {
+    console.log("clicked saved")
+    e.preventDefault();
 
+    const score = {
+        name: snakeName.value,
+        score: snakeScore.value
+    };
+    highScores.push(score); // add score to array
+    highScores.sort( (a,b) => b.score - a.score); // sort the array
+    highScores.splice(10); // cut the array to top 10
 
+    localStorage.setItem("highScores", JSON.stringify(highScores));
+
+    console.log(highScores);{
+        return;
+    }
+}
   clearScreen(); /*resets the screen*/
   checkDotCollision(); /*Snake Eats Dot*/
   drawDot(); /*makes random dots on screen when one is Ate*/
@@ -62,13 +94,14 @@ function startGame() {
   setTimeout(
     startGame,
     1000 / speed
-  ); 
+      ); 
+      
 }}
 
 // game over settings and function
 function isGameOver() {
   let gameOver = false;
-  // snake is not moving yet no game over
+    // snake is not moving yet no game over
   if (yVelocity === 0 && xVelocity === 0) {
     return false;
   }
@@ -98,27 +131,14 @@ function isGameOver() {
     ctx.fillStyle = "red";
     ctx.font = "50px Arial";
     ctx.fillText("Game Over!", canvas.width / 6.5, canvas.height / 2);
-      }
+}
   return gameOver;
 }
-
 // Score text on screen
 function drawScore() {
-  ctx.fillStyle = "green";
-  ctx.font = "15px Ariel";
-  ctx.fillText("Dots Eaten: " + score, canvas.width - 110, 380);
-  for (let i = 0; i < snakeScore.value; i++) {
-    let part = snakeScore[i];
-    if (part.x === headX && part.y === headY) {
-      gameOver = true;
-      break;
-          }
-  }
-  console.log(snakeScore)
-  console.log(score)
+  snakeScore.value = (score)
+//console.log(snakeScore.value,"Top")
  }
-
-
 
 // sets the game square when the browser is refreshed or loaded
 function clearScreen() {
@@ -138,7 +158,6 @@ function drawSnake() {
   while (snakeTail.length > tailLength) {
     snakeTail.shift(); // removes the furthest item from the snake tail if its more then
   }
-
   ctx.fillStyle = "Orange";
   ctx.fillRect(headX * tileCount, headY * tileCount, tileSize, tileSize);
 }
@@ -195,8 +214,10 @@ function keyDown(event) {
 }
 
 
+
+
 //Event listeners
 document.body.addEventListener("keydown", keyDown);
 
-
 startGame();
+
