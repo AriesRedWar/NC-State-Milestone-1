@@ -4,6 +4,13 @@ This is a Homage to one of the first games I played on the phone (old nokia phon
 
 - Game play - 
 "The object of the game is to eat the dots and grow the Snake as long as you can with out hitting the walls or any part of the Snake's growing body."
+Be carefull as the speed increases as you eat the dots.... 
+eat 5 you will gain some speed.
+eat 10 you will be slightly faster.
+eat 20 you will be getting jiggy with it. 
+eat 25 you might just hit a wall. 
+eat 30 the party is on. 
+eat 40 the snake might just break a wall!!!
 
 - Game controls -
 We will be using the Arrow keys on the key board

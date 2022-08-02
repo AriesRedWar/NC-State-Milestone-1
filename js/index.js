@@ -52,14 +52,23 @@ function startGame() {
   drawDot(); /*makes random dots on screen when one is Ate*/
   drawSnake(); /*Snakes starting position*/
     drawScore(); /*score text of how many dots have ben ate */
-  if (score > 2) {
+  if (score > 5) {
     speed = 11;
   }
-  if (score > 5) {
+  if (score > 10) {
+    speed = 13;
+  }
+  if (score > 20) {
     speed = 15;
+  }
+  if (score > 25) {
+    speed = 17;
   }
   if (score > 30) {
     speed = 20;
+  }
+  if (score > 40) {
+    speed = 30;
   }
 /*refreshes the screen while the snake is moving*/
   setTimeout(
