@@ -6,26 +6,26 @@
         <title>Milestone 1 Game</title>
         <link rel="stylesheet" href="/css/style.css">
     </head>
-    <body>    
+    <body id="home">    
         <nav class="nav">
-            <img src="/sprites/Snake 1 small.png" alt="Four Balloons Site Logo">
+            <img src="/sprites/Snake 1 small.png" alt="Small snake image Site Logo">
         <ul>
             <li>
-                <a href="index.html">Home Page</a>
+                <a href="instruction.html">Instructions</a>
             </li>
         </ul>
     </nav>
     <div class="col-3">
+        <h2>Player information</h2>
     <form id="myform">
             <label>Your Name:</label>
-            <input type="text" name="snakeName" 
-            maxlength="20" class="greenBut"  id="snakeName" 
+            <input type="text" name="snakeName" maxlength="20" class="greenBut"  id="snakeName" 
             placeholder="Type Your Name" required>
             <label>Dots Eaten:</label>
             <input type="number" name="snakeScore" class="greenBut" value=0 id="snakeScore" readonly></input>
-            <button type="submit" class="greenBut" id="submit">Submit score</button>
+            <button type="submit" class="greenBut" id="submit" onclick="saveHighScore(event)" disabled>Submit score</button>
         </form>
-        <output id="output"></output>
+        <img id="GL" src="/sprites/Good Luck.png" alt="">
 </div>
     <div class="col-3">
         <h1>Snake (Eat More Dots)</h1>
@@ -35,12 +35,10 @@
             Your browser doesn't support the audio file!
         </audio> 
     </div>
-    <div id="top10">
+    <div class="col-3">
         <h2>Top 10 Dot Eaters</h2>
-        <ol class="highscores">
+        <ol id="highScoreList">
         </ol>
-        <p id="demo"></p>
-        <input id="lowscore" type="hidden">
       </div>
     <script src="/js/index.js"></script>
     </body>

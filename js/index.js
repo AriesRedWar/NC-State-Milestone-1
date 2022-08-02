@@ -3,21 +3,9 @@ const ctx = canvas.getContext("2d"); /*ctx = context */
 const snakeName = document.getElementById("snakeName")
 const snakeScore = document.getElementById("snakeScore")
 const submit = document.getElementById("submit")
-
-
 const highScores = JSON.parse(localStorage.getItem("highScores")) || [];
-
 const MAX_HIGH_SCORE = 10;
-console.log(highScores)
-
-snakeName.addEventListener('keyup', () => {
-    submit.disabled = !snakeName.value;
-})
-
-
-
-
-
+const highScoreList = document.getElementById("highScoreList");
 
 
 class SnakeTail {
@@ -58,24 +46,7 @@ function startGame() {
     if (result) {
       return;
   }
-  saveHighScore = (e) => {
-    console.log("clicked saved")
-    e.preventDefault();
 
-    const score = {
-        name: snakeName.value,
-        score: snakeScore.value
-    };
-    highScores.push(score); // add score to array
-    highScores.sort( (a,b) => b.score - a.score); // sort the array
-    highScores.splice(10); // cut the array to top 10
-
-    localStorage.setItem("highScores", JSON.stringify(highScores));
-
-    console.log(highScores);{
-        return;
-    }
-}
   clearScreen(); /*resets the screen*/
   checkDotCollision(); /*Snake Eats Dot*/
   drawDot(); /*makes random dots on screen when one is Ate*/
@@ -95,7 +66,6 @@ function startGame() {
     startGame,
     1000 / speed
       ); 
-      
 }}
 
 // game over settings and function
@@ -214,10 +184,34 @@ function keyDown(event) {
 }
 
 
+function saveHighScore (e) {
+    e.preventDefault();
+    const score = {
+        name: snakeName.value,
+        score: snakeScore.value
+    };
+    highScores.push(score); // add score to array
+    highScores.sort( (a,b) => b.score - a.score); // sort the array
+    highScores.splice(10); // cut the array to top 10
+    localStorage.setItem("highScores", JSON.stringify(highScores));
+}
 
+
+highScoreList.innerHTML = highScores
+    .map(score => {
+        return (`<li>Player: ${score.name}, Score: ${score.score}</li>`);
+       })
+.join("");
+
+function reload(){
+    reload = location.reload();
+}
 
 //Event listeners
 document.body.addEventListener("keydown", keyDown);
+snakeName.addEventListener('keyup', () => {
+    submit.disabled = !snakeName.value;
+})
+submit.addEventListener("click", reload, false);
 
 startGame();
-
